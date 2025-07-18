@@ -14,6 +14,116 @@ public:
 	enum class Type {
 		RGBA, ARGB, RGB
 	};
+
+	/// Adapted from https://stackoverflow.com/a/6930407
+	struct Hsv {
+		T h;
+		T s;
+		T v;
+	};
+
+	constexpr static Colour<T> FromHsv(const Hsv &hsv) {
+		return FromHsv(hsv.h, hsv.s, hsv.v);
+	}
+
+	constexpr static Colour<T> FromHsv(T h, T s, T v) {
+		T hh, p, q, t, ff;
+		long	i;
+		Colour	out;
+
+		if (s <= static_cast<T>(0.0)) {       // < is bogus, just shuts up warnings
+			out.r = v;
+			out.g = v;
+			out.b = v;
+			return out;
+		}
+
+		hh = h;
+		if (hh >= static_cast<T>(360.0)) hh = static_cast<T>(0.0);
+		hh /= static_cast<T>(60.0);
+		i = static_cast<long>(hh);
+		ff = hh - i;
+		p = v * (static_cast<T>(1.0) - s);
+		q = v * (static_cast<T>(1.0) - (s * ff));
+		t = v * (static_cast<T>(1.0) - (s * (static_cast<T>(1.0) - ff)));
+
+		switch (i) {
+		case 0:
+			out.r = v;
+			out.g = t;
+			out.b = p;
+			break;
+		case 1:
+			out.r = q;
+			out.g = v;
+			out.b = p;
+			break;
+		case 2:
+			out.r = p;
+			out.g = v;
+			out.b = t;
+			break;
+
+		case 3:
+			out.r = p;
+			out.g = q;
+			out.b = v;
+			break;
+		case 4:
+			out.r = t;
+			out.g = p;
+			out.b = v;
+			break;
+		case 5:
+		default:
+			out.r = v;
+			out.g = p;
+			out.b = q;
+			break;
+		}
+		return out;
+	}
+	Hsv ToHsv() const {
+		Hsv		out;
+		T	min, max, delta;
+
+		min = r < g ? r : g;
+		min = min < b ? min : b;
+
+		max = r > g ? r : g;
+		max = max > b ? max : b;
+
+		out.v = max;                                // v
+		delta = max - min;
+		if (delta < 0.00001) {
+			out.s = 0;
+			out.h = 0; // undefined, maybe nan?
+			return out;
+		}
+		if (max > 0.0) { // NOTE: if Max is == 0, this divide would cause a crash
+			out.s = (delta / max);                  // s
+		} else {
+			// if max is 0, then r = g = b = 0              
+			// s = 0, h is undefined
+			out.s = 0.0;
+			out.h = NAN;                            // its now undefined
+			return out;
+		}
+		if (r >= max)                           // > is bogus, just keeps compilor happy
+			out.h = (g - b) / delta;        // between yellow & magenta
+		else
+			if (g >= max)
+				out.h = static_cast<T>(2.0) + (b - r) / delta;  // between cyan & yellow
+			else
+				out.h = static_cast<T>(4.0) + (r - g) / delta;  // between magenta & cyan
+
+		out.h *= static_cast<T>(60.0);                              // degrees
+
+		if (out.h < static_cast<T>(0.0))
+			out.h += static_cast<T>(360.0);
+
+		return out;
+	}
 	
 	constexpr Colour() = default;
 	constexpr Colour(T r, T g, T b, T a = 1) : r(r), g(g), b(b), a(a) {}
