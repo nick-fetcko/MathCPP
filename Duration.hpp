@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <chrono>
+#include <algorithm>
 
 #include "Maths.hpp"
 
@@ -220,4 +221,40 @@ private:
 	Duration<Microseconds> last;
 };
 
+class Decay {
+public:
+	void SetTime(Duration<Microseconds> time) { this->time = time; decay = time; }
+	const float &Get() const { return value; }
+
+	void Update(const Delta &delta) {
+		decay -= delta.change;
+		sinceLastReset += delta.change;
+		value = std::max(
+			0.0f,
+			static_cast<float>(decay.value.count()) / time.value.count() * maxValue
+		);
+	}
+
+	void Reset(float value) { 
+		this->value = value; 
+		maxValue = value;
+		decay = time; 
+		wasReset = true;
+		sinceLastReset.value = 0us;
+	}
+
+	bool WasReset() const { return wasReset; }
+	void HasBeenReset() { this->wasReset = false; }
+
+	const Duration<Microseconds> &SinceLastReset() const { return sinceLastReset; }
+
+private:
+	Duration<Microseconds> decay;
+	Duration<Microseconds> time;
+	Duration<Microseconds> sinceLastReset = 0us;
+
+	float value = 0.0f;
+	float maxValue = 0.0f;
+	bool wasReset = false;
+};
 }
