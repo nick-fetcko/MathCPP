@@ -378,7 +378,7 @@ public:
 	template<typename T1>
 	constexpr friend auto operator!=(const Vector &lhs, const Vector<T1, N> &rhs) {
 		for (std::size_t i = 0; i < N; i++) {
-			if (std::abs(lhs[i] - rhs[i]) <= 0.0001f)
+			if (std::abs(lhs[i] - rhs[i]) > 0.0001f)
 				return true;
 		}
 		return false;
