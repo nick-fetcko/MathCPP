@@ -24,6 +24,10 @@ public:
 	template<typename T>
 	static constexpr T PI = static_cast<T>(3.14159265358979323846264338327950288L);
 
+	// Multiply a measurement in degrees by DEG2RAD to get radians
+	template<typename T>
+	static constexpr T DEG2RAD = PI<T> / static_cast<T>(180);
+
 	Maths() = delete;
 
 	/**
