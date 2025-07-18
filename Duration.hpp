@@ -202,4 +202,22 @@ using Hours = std::chrono::hours;
 //using Durationu = Duration<Microseconds>;
 //using Durationm = Duration<Milliseconds>;
 //using Durations = Duration<Seconds>;
+
+class Delta {
+public:
+	const Delta &Update() {
+		current = Duration<Microseconds>::Now();
+		change = current - last;
+		last = current;
+
+		return *this;
+	}
+
+	Duration<Microseconds> change;
+
+private:
+	Duration<Microseconds> current;
+	Duration<Microseconds> last;
+};
+
 }
