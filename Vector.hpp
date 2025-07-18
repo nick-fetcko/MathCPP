@@ -391,10 +391,24 @@ public:
 		return result;
 	}
 
+	constexpr friend auto operator+(const Vector &lhs , const T &rhs) {
+		Vector result = lhs;
+		for (std::size_t i = 0; i < N; i++)
+			result[i] += rhs;
+		return result;
+	}
+
 	constexpr friend auto operator-(const Vector &lhs) {
 		Vector result;
 		for (std::size_t i = 0; i < N; i++)
 			result[i] = -lhs[i];
+		return result;
+	}
+
+	constexpr friend auto operator-(const Vector &lhs, const T &rhs) {
+		Vector result = lhs;
+		for (std::size_t i = 0; i < N; i++)
+			result[i] -= rhs;
 		return result;
 	}
 
@@ -427,6 +441,13 @@ public:
 		Vector<decltype(lhs[0] - rhs[0]), N> result;
 		for (std::size_t i = 0; i < N; i++)
 			result[i] = lhs[i] - rhs[i];
+		return result;
+	}
+
+	constexpr friend auto operator*(const T &lhs, const Vector &rhs) {
+		Vector result = rhs;
+		for (std::size_t i = 0; i < N; i++)
+			result[i] *= lhs;
 		return result;
 	}
 
