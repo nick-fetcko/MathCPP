@@ -42,6 +42,10 @@ public:
 		return static_cast<T2>(value.count()) / static_cast<T2>(typename std::ratio_divide<typename T::period, typename T1::period>::den);
 	}
 
+	constexpr auto AsSeconds() const {
+		return value / 1.0s;
+	}
+
 	static Duration Now() {
 		static const auto LocalEpoch = std::chrono::high_resolution_clock::now();
 		return std::chrono::duration_cast<T>(std::chrono::high_resolution_clock::now() - LocalEpoch);
