@@ -244,6 +244,14 @@ public:
 	}
 
 	/**
+	 * Calculates the inverse (NOT the opposing colour on the colour wheel) of this colour
+	 * @return a new Colour that's the inverse of this colour
+	 */
+	Colour Inverse() const {
+		return GetInt() ^ 0xFFFFFF00;
+	}
+
+	/**
 	 * Gets a colour representing the unit value of this colour.
 	 * @return The unit colour.
 	 */
