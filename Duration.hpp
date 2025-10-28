@@ -2,6 +2,7 @@
 
 #include <chrono>
 #include <algorithm>
+#include <iomanip>
 
 #include "Maths.hpp"
 
@@ -40,7 +41,7 @@ public:
 
 	template<typename T1, typename T2 = typename T1::rep, typename = std::enable_if_t<is_duration_v<T1>>>
 	constexpr auto Cast() const {
-		return static_cast<T2>(value.count()) / static_cast<T2>(typename std::ratio_divide<typename T::period, typename T1::period>::den);
+		return static_cast<T2>(value.count()) / static_cast<T2>(std::ratio_divide<typename T::period, typename T1::period>::den);
 	}
 
 	constexpr auto AsSeconds() const {

@@ -27,8 +27,8 @@ public:
 	}
 
 	constexpr static Colour<T> FromHsv(T h, T s, T v) {
-		T hh, p, q, t, ff;
-		long	i;
+		T hh = 0, p = 0, q = 0, t = 0, ff = 0;
+		long	i = 0;
 		Colour	out;
 
 		if (s <= static_cast<T>(0.0)) {       // < is bogus, just shuts up warnings

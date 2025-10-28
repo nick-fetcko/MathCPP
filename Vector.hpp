@@ -1,7 +1,10 @@
 #pragma once
 
 #include <algorithm>
+#include <cassert>
 #include <cstdint>
+#include <cmath>
+#include <type_traits>
 
 #include "Maths.hpp"
 
@@ -117,10 +120,10 @@ public:
 	template<typename = std::enable_if_t<N >= 2>>
 	constexpr Vector<T, 2> &xy() { return *reinterpret_cast<Vector<T, 2> *>(this); }
 	
-	template<typename = std::enable_if_t<N >= 3>>
-	constexpr const Vector<T, 3> &xyz() const { return *reinterpret_cast<const Vector<T, 3> *>(this); }
-	template<typename = std::enable_if_t<N >= 3>>
-	constexpr Vector<T, 3> &xyz() { return *reinterpret_cast<Vector<T, 3> *>(this); }
+	template<typename U = T, typename = std::enable_if<N >= 3>>
+	constexpr const Vector<U, 3> &xyz() const { return *reinterpret_cast<const Vector<U, 3> *>(this); }
+	template<typename U = T, typename = std::enable_if<N >= 3>>
+	constexpr Vector<U, 3> &xyz() { return *reinterpret_cast<Vector<U, 3> *>(this); }
 
 	template<std::size_t ...I>
 	constexpr auto Swizzle() const { return Vector<T, sizeof...(I)>(at(I)...); }
@@ -412,7 +415,7 @@ public:
 		return result;
 	}
 
-	template<typename = std::enable_if_t<std::is_integral_v<T>>>
+	template<typename U = T, typename = std::enable_if<std::is_integral_v<U>>>
 	constexpr friend auto operator~(const Vector &lhs) {
 		Vector result;
 		for (std::size_t i = 0; i < N; i++)
@@ -420,7 +423,7 @@ public:
 		return result;
 	}
 
-	template<typename = std::enable_if_t<std::is_integral_v<T>>>
+	template<typename U = T, typename = std::enable_if<std::is_integral_v<U>>>
 	constexpr friend auto operator!(const Vector &lhs) {
 		Vector result;
 		for (std::size_t i = 0; i < N; i++)
