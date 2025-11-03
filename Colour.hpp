@@ -81,6 +81,13 @@ public:
 			out.b = q;
 			break;
 		}
+
+		// Clamp the left-hand side
+		// We don't clamp the right to allow for HDR
+		out.r = std::max(out.r, static_cast<T>(0));
+		out.g = std::max(out.g, static_cast<T>(0));
+		out.b = std::max(out.b, static_cast<T>(0));
+
 		return out;
 	}
 	Hsv ToHsv() const {
