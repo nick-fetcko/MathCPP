@@ -336,6 +336,14 @@ public:
 		return result;
 	}
 
+	template<typename T1, typename = std::enable_if_t<std::is_arithmetic_v<T1>>>
+	constexpr friend auto operator+(const Colour &lhs, T1 rhs) {
+		Colour<decltype(lhs[0] + rhs)> result;
+		for (std::size_t i = 0; i < 4; i++)
+			result[i] = lhs[i] + rhs;
+		return result;
+	}
+
 	template<typename T1>
 	constexpr friend auto operator-(const Colour &lhs, const Colour<T1> &rhs) {
 		Colour<decltype(lhs[0] - rhs[0])> result;
