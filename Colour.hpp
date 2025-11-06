@@ -303,6 +303,29 @@ public:
 		return stream.str();
 	}
 
+	template<typename = std::enable_if_t<std::is_arithmetic_v<T>>>
+	void Tone(T gamma, T contrast, T brightness, T multiplier) {
+		r = std::pow(r, static_cast<T>(1.0) / gamma);
+		g = std::pow(g, static_cast<T>(1.0) / gamma);
+		b = std::pow(b, static_cast<T>(1.0) / gamma);
+
+		r = ((r - static_cast<T>(0.5)) * std::max(contrast, static_cast<T>(0))) + static_cast<T>(0.5);
+		g = ((g - static_cast<T>(0.5)) * std::max(contrast, static_cast<T>(0))) + static_cast<T>(0.5);
+		b = ((b - static_cast<T>(0.5)) * std::max(contrast, static_cast<T>(0))) + static_cast<T>(0.5);
+
+		*this *= multiplier;
+		*this += brightness;
+
+		if (auto max = std::max(r, std::max(g, b)); max > multiplier) {
+			r = r / max * multiplier;
+			g = g / max * multiplier;
+			b = b / max * multiplier;
+		}
+
+		// Reset alpha
+		a = 1.0f;
+	}
+
 	template<typename T1>
 	constexpr friend auto operator==(const Colour &lhs, const Colour<T1> &rhs) {
 		for (std::size_t i = 0; i < 4; i++) {
