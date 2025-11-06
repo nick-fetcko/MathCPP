@@ -259,6 +259,20 @@ public:
 	}
 
 	/**
+	 * Calculates the inverse (NOT the opposing colour on the colour wheel) of this colour
+	 * by subtracting each channel from 1.
+	 * @param max The maximum color value for each channel
+	 * @return a new Colour that's the inverse of this colour
+	 */
+	Colour Inverse(T max) const {
+		return Colour<T>(
+			(static_cast<T>(1.0) - r / max) * max,
+			(static_cast<T>(1.0) - g / max) * max,
+			(static_cast<T>(1.0) - b / max) * max
+		);
+	}
+
+	/**
 	 * Gets a colour representing the unit value of this colour.
 	 * @return The unit colour.
 	 */
