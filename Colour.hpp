@@ -266,9 +266,9 @@ public:
 	 */
 	Colour Inverse(T max) const {
 		return Colour<T>(
-			(static_cast<T>(1.0) - r / max) * max,
-			(static_cast<T>(1.0) - g / max) * max,
-			(static_cast<T>(1.0) - b / max) * max
+			(static_cast<T>(1.0) - r / max),
+			(static_cast<T>(1.0) - g / max),
+			(static_cast<T>(1.0) - b / max)
 		);
 	}
 
