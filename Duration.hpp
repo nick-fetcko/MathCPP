@@ -3,6 +3,7 @@
 #include <chrono>
 #include <algorithm>
 #include <iomanip>
+#include <sstream>
 
 #include "Maths.hpp"
 
