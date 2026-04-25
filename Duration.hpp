@@ -216,7 +216,7 @@ public:
 		return *this;
 	}
 
-	Duration<Microseconds> change;
+	Duration<Microseconds> change = 0us;
 
 private:
 	Duration<Microseconds> current;
