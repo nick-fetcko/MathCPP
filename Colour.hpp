@@ -340,6 +340,13 @@ public:
 		a = 1.0f;
 	}
 
+	template<typename = std::enable_if_t<std::is_arithmetic_v<T>>>
+	constexpr bool IsGrey() const {
+		return r == g && 
+			   g == b && 
+			   b == r;
+	}
+
 	template<typename T1>
 	constexpr friend auto operator==(const Colour &lhs, const Colour<T1> &rhs) {
 		for (std::size_t i = 0; i < 4; i++) {
