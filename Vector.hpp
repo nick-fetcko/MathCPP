@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <cmath>
 #include <type_traits>
+#include <ostream>
 
 #include "Maths.hpp"
 
